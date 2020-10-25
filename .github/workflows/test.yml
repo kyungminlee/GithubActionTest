@@ -11,7 +11,7 @@ jobs:
         echo "C:\Miniconda\Library\bin" >> $Env:GITHUB_PATH
     - name: install stuff
       run: |
-        conda install -y mkl mkl-include mkl-devel
+        conda install -q -y mkl mkl-include mkl-devel
     - name: checkout itensor-cmake
       run: |
         git clone https://github.com/kyungminlee/itensor-cmake.git
