@@ -4,30 +4,31 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: Add Miniconda to path
+    - name: Add Miniconda to PATH
       run: |
         echo "C:\Miniconda" >> $Env:GITHUB_PATH
-    - uses: s-weigand/setup-conda@v1
+        echo "C:\Miniconda\condabin" >> $Env:GITHUB_PATH
+        echo "C:\Miniconda\Library\bin" >> $Env:GITHUB_PATH
     - name: install stuff
       run: |
         conda install -y mkl mkl-include mkl-devel
-        Get-ChildItem -Recurse $Env:CONDA
-    # - uses: actions/checkout@v2
     - name: checkout itensor-cmake
       run: |
-        pwd
         git clone https://github.com/kyungminlee/itensor-cmake.git
         cd itensor-cmake
         git submodule update --init
-    - name: show
-      run: |
-        pwd
-        dir
     - name: build
       run: |
         cd itensor-cmake
         cmake -B build -DBLA_VENDOR=Intel10_64_dyn -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\installdir"
-        cmake --build build
+        cmake --build build --config Release --target install
       env:
-        LAPACK_INCLUDE_DIR: C:\Miniconda3\envs\mkl\Library\include
-        MKLROOT: C:\Miniconda3\envs\mkl\Library
+        LAPACK_INCLUDE_DIR: C:\Miniconda\Library\include
+        MKLROOT: C:\Miniconda\Library
+    - name: compress
+      run: |
+        7z a ${{ github.workspace }}\foo.zip ${{ github.workspace }}\installdir
+    - uses: actions/upload-artifact@v2
+      with:
+        name: foo.zip
+        path: ${{ github.workspace }}/foo.zip
