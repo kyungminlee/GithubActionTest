@@ -5,10 +5,13 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: conda-incubator/setup-miniconda@v1
+      with:
+        miniconda-version: "latest"
+        activate-environment: mkl
     - name: install stuff
       run: |
         conda install -y mkl mkl-include mkl-devel
-        Get-ChildItem -Recurse C:\Miniconda\Library
+        Get-ChildItem -Recurse C:\Miniconda\envs\mkl\Library
     # - uses: actions/checkout@v2
     - name: checkout itensor-cmake
       run: |
@@ -26,5 +29,5 @@ jobs:
         cmake -B build -DBLA_VENDOR=Intel10_64_dyn -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\installdir"
         cmake --build build
       env:
-        LAPACK_INCLUDE_DIR: C:\Miniconda\Library\include
-        MKLROOT: C:\Miniconda\Library
+        LAPACK_INCLUDE_DIR: C:\Miniconda\envs\mkl\Library\include
+        MKLROOT: C:\Miniconda\envs\mkl\Library
