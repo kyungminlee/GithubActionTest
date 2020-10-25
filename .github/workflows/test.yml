@@ -8,6 +8,7 @@ jobs:
     - name: install stuff
       run: |
         conda install -y mkl mkl-include mkl-devel
+        Get-ChildItem -Recurse C:\Miniconda\Library
     # - uses: actions/checkout@v2
     - name: checkout itensor-cmake
       run: |
@@ -22,7 +23,7 @@ jobs:
     - name: build
       run: |
         cd itensor-cmake
-        cmake -B build -DBLA_VENDOR=Intel10_64lp -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\installdir"
+        cmake -B build -DBLA_VENDOR=Intel10_64_dyn -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\installdir"
         cmake --build build
       env:
         LAPACK_INCLUDE_DIR: C:\Miniconda\Library\include
