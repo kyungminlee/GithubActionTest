@@ -7,7 +7,7 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v1
     - name: install stuff
       run: |
-        conda install -y mkl mkl-include
+        conda install -y mkl mkl-include mkl-devel
     # - uses: actions/checkout@v2
     - name: checkout itensor-cmake
       run: |
@@ -19,3 +19,11 @@ jobs:
       run: |
         pwd
         dir
+    - name: build
+      run: |
+        cd itensor-cmake
+        cmake -B build -DBLA_VENDOR=Intel10_64lp -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}\installdir"
+        cmake --build build
+      env:
+        LAPACK_INCLUDE_DIR: C:\Miniconda\Library\include
+        MKLROOT: C:\Miniconda\Library
