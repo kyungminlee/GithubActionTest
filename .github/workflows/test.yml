@@ -4,17 +4,14 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: root directory
+    - name: Add Miniconda to path
       run: |
-        Get-ChildItem C:\
-    - uses: conda-incubator/setup-miniconda@v1
-      with:
-        miniconda-version: "latest"
-        activate-environment: mkl
+        echo "C:\Miniconda" >> $Env:GITHUB_PATH
+    - uses: s-weigand/setup-conda@v1
     - name: install stuff
       run: |
         conda install -y mkl mkl-include mkl-devel
-        Get-ChildItem -Recurse C:\Miniconda3\envs\mkl\Library
+        Get-ChildItem -Recurse $Env:CONDA
     # - uses: actions/checkout@v2
     - name: checkout itensor-cmake
       run: |
