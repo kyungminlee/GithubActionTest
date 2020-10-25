@@ -1,0 +1,21 @@
+name: test
+on: [push]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: conda-incubator/setup-miniconda@v1
+    - name: install stuff
+      run: |
+        conda install -y mkl mkl-include
+    # - uses: actions/checkout@v2
+    - name: checkout itensor-cmake
+      run: |
+        pwd
+        git clone https://github.com/kyungminlee/itensor-cmake.git
+        cd itensor-cmake
+        git submodule update --init
+    - name: show
+      run: |
+        pwd
+        dir
