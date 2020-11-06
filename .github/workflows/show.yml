@@ -1,0 +1,8 @@
+name: show
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: linux-latest
+    steps:
+    - name: Show variables
+      run: set
